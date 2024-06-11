@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Search Analytics</title>
+</head>
+<body>
+  <h1>Search Analytics</h1>
+<a href="<%= root_path %>">
+    <button class="btn btn-primary">Back</button>
+  </a>
+  <ul>
+    <% @search_queries.group_by(&:ip_address).each do |ip, queries| %>
+      <li><strong>IP: <%= ip %></strong>
+        <ul>
+          <% queries.each do |query| %>
+            <li><%= query.query %></li>
+          <% end %>
+        </ul>
+      </li>
+    <% end %>
+  </ul>
+</body>
+</html>
