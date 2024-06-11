@@ -1,16 +1,17 @@
 class SearchController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:log]
 
-  def index; end
-
   def log
     ip_address = request.remote_ip
     query = params[:query]
 
-    puts "Received query: #{query} from IP: #{ip_address}"
-
-    SearchRecord.create(query:, ip_address:)
-    render json: { status: 'ok' }
+    begin
+      SearchRecord.create!(query:, ip_address:)
+      render json: { status: 'ok' }
+    rescue StandardError => e
+      logger.error "An error occurred while processing search query: #{query} - #{e.message}"
+      render json: { error: 'An error occurred while processing the search query.' }, status: :unprocessable_entity
+    end
   end
 
   def analytics
