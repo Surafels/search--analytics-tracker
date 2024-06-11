@@ -37,3 +37,4 @@ production:
   database: search_analytics_tracker_pro
   username: search_analytics_tracker
   password: <%= ENV["SEARCH_ANALYTICS_TRACKER_DATABASE_PASSWORD"] %>
+  url: <%= ENV["DATABASE_URL"] %>
