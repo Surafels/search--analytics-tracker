@@ -57,7 +57,6 @@ Ruby, Ruby on Rails, Postgresql,JavaScript, Bootstrap,Visual Studia Code
 
 ### Key Features <a name="key-features"></a>
 
-- **[Authorization ]**
 - **[Unit Testing ]**
 - **[User-Friendly Interface]**
 
