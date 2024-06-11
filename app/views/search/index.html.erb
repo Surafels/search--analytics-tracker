@@ -30,101 +30,69 @@
   <div class="container">
     <nav class="navbar navbar-dark bg-dark">
       <a class="navbar-brand" href="<%= search_analytics_path %>">Search Analytics</a>
-
       <form class="form-inline my-2 my-lg-0 mx-lg-auto">
         <input class="form-control mr-sm-2" type="search" placeholder="Type to search..." aria-label="Search" id="searchBox">
         <button class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="performSearch()">Search</button>
       </form>
     </nav>
-
     <div class="search-results" id="searchResults"></div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script>
-    let timeout = null;
-    const searchBox = document.getElementById('searchBox');
-    let completeQuery = null;
+    (function() {
+      let timeout = null;
+      const searchBox = document.getElementById('searchBox');
+      let finalQuery = '';
 
-    searchBox.addEventListener('input', function() {
-      clearTimeout(timeout);
+      searchBox.addEventListener('input', function() {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+          finalQuery = searchBox.value.trim();
+          showSearchResults(finalQuery);
+        }, 500);
+      });
 
-      timeout = setTimeout(checkForCompletion, 500);  
-    });
-
-    function checkForCompletion() {
-      const query = searchBox.value.trim();
-      if (isCompleteQuery(query)) {
-        completeQuery = query;
-        showSearchResults(completeQuery);
-      } else {
-        completeQuery = null;
-        clearSearchResults();
-      }
-    }
-
-    function isCompleteQuery(query) {
-      
-      return /\S$/.test(query);
-    }
-
-    function performSearch() {
-      if (completeQuery) {
-        console.log("Performing search for: " + completeQuery);
-        sendSearchQuery(completeQuery);
-      } else {
-        console.log("Incomplete search query. Ignoring...");
-      }
-    }
-
-    function sendSearchQuery(query) {
-      console.log("Processing search query: " + query);
-      fetch('/search/log', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-        body: JSON.stringify({ query: query })
-      }).then(response => {
-        if (response.ok) {
-          console.log("Search query processed successfully: " + query);
+      window.performSearch = function() {
+        if (finalQuery) {
+          console.log("Performing search for: " + finalQuery);
+          sendSearchQuery(finalQuery);
         } else {
-          console.error("Failed to process search query: " + query);
+          console.log("Incomplete search query. Ignoring...");
         }
-      }).catch(error => {
-        console.error("An error occurred while processing search query: " + query, error);
-      });
-    }
+      }
 
-    function showSearchResults(query) {
-      const searchResultsContainer = document.getElementById('searchResults');
-      searchResultsContainer.innerHTML = '';
+      function sendSearchQuery(query) {
+        console.log("Processing search query: " + query);
+        fetch('/search/log', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+          },
+          body: JSON.stringify({ query: query })
+        }).then(response => {
+          if (response.ok) {
+            console.log("Search query processed successfully: " + query);
+          } else {
+            console.error("Failed to process search query: " + query);
+          }
+        }).catch(error => {
+          console.error("An error occurred while processing search query: " + query, error);
+        });
+      }
 
+      function showSearchResults(query) {
+        const searchResultsContainer = document.getElementById('searchResults');
+        searchResultsContainer.textContent = query;
+      }
 
-      const results = [
-        "" + query,
-        "" + query,
-        "" + query
-      ];
-
-      results.forEach(result => {
-        const listItem = document.createElement('li');
-        listItem.textContent = result;
-        searchResultsContainer.appendChild(listItem);
-      });
-    }
-    function showSearchResults(query) {
-  const searchResultsContainer = document.getElementById('searchResults');
-  searchResultsContainer.textContent = query;
-}
-
-
-    function clearSearchResults() {
-      const searchResultsContainer = document.getElementById('searchResults');
-      searchResultsContainer.innerHTML = '';
-    }
+      function clearSearchResults() {
+        const searchResultsContainer = document.getElementById('searchResults');
+        searchResultsContainer.innerHTML = '';
+      }
+    })();
   </script>
 </body>
 </html>

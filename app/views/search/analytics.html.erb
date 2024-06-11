@@ -2,22 +2,30 @@
 <html>
 <head>
   <title>Search Analytics</title>
+  <!-- Add Bootstrap CSS -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    /* Additional custom styles */
+    body {
+      padding-top: 20px;
+    }
+  </style>
 </head>
 <body>
-  <h1>Search Analytics</h1>
-<a href="<%= root_path %>">
-    <button class="btn btn-primary">Back</button>
-  </a>
-  <ul>
-    <% @search_queries.group_by(&:ip_address).each do |ip, queries| %>
-      <li><strong>IP: <%= ip %></strong>
-        <ul>
-          <% queries.each do |query| %>
-            <li><%= query.query %></li>
-          <% end %>
-        </ul>
-      </li>
-    <% end %>
-  </ul>
+  <div class="container">
+    <h1 class="text-center">Search Analytics</h1>
+    <a href="<%= root_path %>" class="btn btn-primary mb-3">Back</a>
+    <ul class="list-unstyled">
+      <% @search_queries.group_by(&:ip_address).each do |ip, queries| %>
+        <li><strong>IP: <%= ip %></strong>
+          <ul>
+            <% queries.each do |query| %>
+              <li><%= query.query %></li>
+            <% end %>
+          </ul>
+        </li>
+      <% end %>
+    </ul>
+  </div>
 </body>
 </html>
