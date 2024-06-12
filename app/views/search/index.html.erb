@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search Analytics</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .search-results {
+      margin-top: 20px;
+    }
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .form-inline {
+      display: flex;
+      flex-grow: 1;
+      justify-content: center;
+    }
+    .form-inline .form-control {
+      flex-grow: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <nav class="navbar navbar-dark bg-dark">
+      <a class="navbar-brand" href="<%= search_analytics_path %>">Search Analytics</a>
+      <form class="form-inline my-2 my-lg-0 mx-lg-auto">
+        <input class="form-control mr-sm-2" type="search" placeholder="Type to search..." aria-label="Search" id="searchBox">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="performSearch()">Search</button>
+      </form>
+    </nav>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    (function() {
+      let timeout = null;
+      const searchBox = document.getElementById('searchBox');
+      let finalQuery = '';
+
+      searchBox.addEventListener('input', function() {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+          finalQuery = searchBox.value.trim();
+          showSearchResults(finalQuery);
+        }, 500);
+      });
+
+      window.performSearch = function() {
+        if (finalQuery) {
+          console.log("Performing search for: " + finalQuery);
+          sendSearchQuery(finalQuery);
+        } else {
+          console.log("Incomplete search query. Ignoring...");
+        }
+      }
+
+      function sendSearchQuery(query) {
+        console.log("Processing search query: " + query);
+        fetch('/search/log', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+          },
+          body: JSON.stringify({ query: query })
+        }).then(response => {
+          if (response.ok) {
+            console.log("Search query processed successfully: " + query);
+          } else {
+            console.error("Failed to process search query: " + query);
+          }
+        }).catch(error => {
+          console.error("An error occurred while processing search query: " + query, error);
+        });
+      }
+
+      function showSearchResults(query) {
+        const searchResultsContainer = document.getElementById('searchResults');
+        searchResultsContainer.textContent = query;
+      }
+
+      function clearSearchResults() {
+        const searchResultsContainer = document.getElementById('searchResults');
+        searchResultsContainer.innerHTML = '';
+      }
+    })();
+  </script>
+</body>
+</html>

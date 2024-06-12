@@ -1,0 +1,40 @@
+# PostgreSQL. Versions 9.3 and up are supported.
+#
+# Install the pg driver:
+#   gem install pg
+# On macOS with Homebrew:
+#   gem install pg -- --with-pg-config=/usr/local/bin/pg_config
+# On Windows:
+#   gem install pg
+#       Choose the win32 build.
+#       Install PostgreSQL and put its /bin directory on your path.
+#
+# Configure Using Gemfile
+# gem "pg"
+#
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  username: postgres
+  password: 7777
+  # For details on connection pooling, see Rails configuration guide
+  # https://guides.rubyonrails.org/configuring.html#database-pooling
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *default
+  database: search_analytics_tracker
+  username: postgres
+  password: 7777
+ 
+test:
+  <<: *default
+  database: search_analytics_tracker_tests
+  username: postgres
+  password: 7777
+production:
+  <<: *default
+  database: search_analytics_tracker_pro
+  username: search_analytics_tracker
+  password: <%= ENV["SEARCH_ANALYTICS_TRACKER_DATABASE_PASSWORD"] %>
+  url: <%= ENV["DATABASE_URL"] %>
