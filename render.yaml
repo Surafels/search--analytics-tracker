@@ -2,7 +2,6 @@ databases:
   - name: search_analytics_tracker
     databaseName: search_analytics_tracker
     user: search_analytics_tracker
-
 services:
   - type: web
     name: search_analytics_tracker
@@ -18,8 +17,4 @@ services:
       - key: RAILS_MASTER_KEY
         sync: false
       - key: WEB_CONCURRENCY
-      value: 2
-
-
-
-        
+        value: 2
