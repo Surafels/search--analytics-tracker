@@ -24,18 +24,18 @@
 
 # 📖 [Search analytics tracker] <a name="about-project"></a>
 
-The **Search analytics tracker** s a tool that records and analyzes user search queries, providing insights into search trends and user behavior.
+The **Search analytics tracker** is a tool that records and analyzes user search queries, providing insights into search trends and user behavior.
 
 
 ## Deployment 
 
-[render deploy](https://search-analytics-tracker.onrender.com)
+[render deploy](https://search-analytics-tracker-3.onrender.com)
 
 
 
 ## 🛠 Built With <a name="built-with"></a>
 
-Ruby, Ruby on Rails, Postgresql,JavaScript, Bootstrap,Visual Studia Code
+Ruby, Ruby on Rails, Postgresql, JavaScript, Bootstrap, Visual Studio Code
 
 ### Tech Stack <a name="tech-stack"></a>
 
@@ -67,7 +67,7 @@ Ruby, Ruby on Rails, Postgresql,JavaScript, Bootstrap,Visual Studia Code
 
 ### Setup <a name="setup"></a>
 
-In order to use this project.. Clone this repository to your desired folder by:
+In order to use this project... Clone this repository to your desired folder by:
 
 - git clone https://github.com/Surafels/search--analytics-tracker.git
 
