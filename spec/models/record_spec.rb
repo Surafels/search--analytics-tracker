@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe SearchRecord, type: :model do
-  # Create a valid search record for testing purposes
   let(:valid_search_record) { SearchRecord.new(query: 'example search', ip_address: '127.0.0.1') }
 
   context 'validations' do

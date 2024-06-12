@@ -30,17 +30,4 @@ RSpec.describe SearchController, type: :controller do
       expect(JSON.parse(response.body)).to eq('status' => 'ok')
     end
   end
-
-  #   describe 'GET #analytics' do
-  #     it 'assigns all search queries to @search_queries' do
-  #       search_record = SearchRecord.create!(query: 'example query', ip_address: '127.0.0.1')
-  #       get :analytics
-  #       expect(assigns(:search_queries)).to eq([search_record])
-  #     end
-
-  # it 'renders the analytics template' do
-  #   get :analytics
-  #   expect(response).to render_template('analytics')
-  # end
-  #   end
 end
